@@ -11,7 +11,7 @@ import java.util.List;
 
 public final class JsonUtils {
 
-
+    private static final String NAME = "name";
     private static final String MAIN_NAME = "mainName";
     private static final String ALSO_KNOWN_AS = "alsoKnownAs";
     private static final String PLACE_OF_ORIGIN = "placeOfOrigin";
@@ -24,7 +24,8 @@ public final class JsonUtils {
         // method variables
         List<String> mAKAList = new ArrayList<String>();
         List<String> mIngredientsList = new ArrayList<String>();
-        Sandwich mSandwich;
+        Sandwich mSandwich = new Sandwich();
+        System.out.println("parseSandWhich Methond called."); //remove this!
 
         try {
 
@@ -32,10 +33,12 @@ public final class JsonUtils {
             JSONObject jsonObject = new JSONObject(json);
 
             // get the name into a JSONObject
-            JSONObject name = jsonObject.getJSONObject("");
+            JSONObject name = jsonObject.getJSONObject(NAME);
 
             //get main name
             String mainName = name.getString(MAIN_NAME);
+            System.out.println(mainName); //remove this!
+
 
             // get alsoKnownAs array
             JSONArray aKaJasonArray = name.getJSONArray(ALSO_KNOWN_AS);
@@ -56,12 +59,18 @@ public final class JsonUtils {
                 mIngredientsList.add(ingredient);
             }
 
-            mSandwich = new Sandwich(mainName, mAKAList, placeOfOrigin, description, imageURL, mIngredientsList);
-
-            return mSandwich;
+            // set variables to mSandwich
+            mSandwich.setMainName(mainName);
+            mSandwich.setAlsoKnownAs(mAKAList);
+            mSandwich.setPlaceOfOrigin(placeOfOrigin);
+            mSandwich.setDescription(description);
+            mSandwich.setImage(imageURL);
+            mSandwich.setIngredients(mIngredientsList);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        return mSandwich;
     }
 }
