@@ -21,56 +21,43 @@ public final class JsonUtils {
 
     public static Sandwich parseSandwichJson(String json) {
 
-        // method variables
-        List<String> mAKAList = new ArrayList<String>();
-        List<String> mIngredientsList = new ArrayList<String>();
-        Sandwich mSandwich = new Sandwich();
-        System.out.println("parseSandWhich Methond called."); //remove this!
+        Sandwich mSandwich = null;
 
         try {
+            JSONObject mSandwichJsonObject = new JSONObject(json);
 
-            // initialize Json object from json String
-            JSONObject jsonObject = new JSONObject(json);
+            JSONObject mName = mSandwichJsonObject.getJSONObject(NAME);
 
-            // get the name into a JSONObject
-            JSONObject name = jsonObject.getJSONObject(NAME);
+            String mMainName = mName.getString(MAIN_NAME);
 
-            //get main name
-            String mainName = name.getString(MAIN_NAME);
-            System.out.println(mainName); //remove this!
+            JSONArray mAKAJsonArray = mName.getJSONArray(ALSO_KNOWN_AS);
+            List<String> mAKA = jsonArrayToStringListConverter(mAKAJsonArray);
 
+            String mPlaceOfOrigin = mSandwichJsonObject.getString(PLACE_OF_ORIGIN);
 
-            // get alsoKnownAs array
-            JSONArray aKaJasonArray = name.getJSONArray(ALSO_KNOWN_AS);
-            for (int i = 0; i < aKaJasonArray.length(); i++) {
-                String akaName = aKaJasonArray.optString(i);
-                mAKAList.add(akaName);
-            }
+            String mDescription = mSandwichJsonObject.getString(DESCRIPTION);
 
-            // get place of origin, description, image URL
-            String placeOfOrigin = name.getString(PLACE_OF_ORIGIN);
-            String description = name.getString(DESCRIPTION);
-            String imageURL = name.getString(IMAGE);
+            String mImage = mSandwichJsonObject.getString(IMAGE);
 
-            // get ingredients array
-            JSONArray ingredientsArray = name.getJSONArray(INGREDIENTS);
-            for (int i = 0; i < ingredientsArray.length(); i++) {
-                String ingredient = ingredientsArray.optString(i);
-                mIngredientsList.add(ingredient);
-            }
+            JSONArray mIngredientsJsonArray = mSandwichJsonObject.getJSONArray(INGREDIENTS);
+            List<String> mIngredients = jsonArrayToStringListConverter(mIngredientsJsonArray);
 
-            // set variables to mSandwich
-            mSandwich.setMainName(mainName);
-            mSandwich.setAlsoKnownAs(mAKAList);
-            mSandwich.setPlaceOfOrigin(placeOfOrigin);
-            mSandwich.setDescription(description);
-            mSandwich.setImage(imageURL);
-            mSandwich.setIngredients(mIngredientsList);
+            mSandwich = new Sandwich(mMainName, mAKA, mPlaceOfOrigin, mDescription, mImage, mIngredients);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return mSandwich;
+
+    }
+
+    private static List<String> jsonArrayToStringListConverter (JSONArray jsonArray) throws JSONException {
+        int arrayLength = jsonArray.length();
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < arrayLength; i++) {
+            result.add(jsonArray.getString(i));
+        }
+        return result;
     }
 }

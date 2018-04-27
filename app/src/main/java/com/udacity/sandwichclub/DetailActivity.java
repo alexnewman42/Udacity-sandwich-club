@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
@@ -29,6 +28,7 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent == null) {
             closeOnError();
+            return;
         }
 
         int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
@@ -60,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI(Sandwich sandwich) {
+    private void populateUI(Sandwich mSandwich) {
 
         // get references to TextViews
         TextView alsoKnownAsTV = findViewById(R.id.also_known_tv);
@@ -70,45 +70,57 @@ public class DetailActivity extends AppCompatActivity {
 
         // method variables
         String mAlsoKnownAs;
-        List<String> mAlsoKnownAsList = sandwich.getAlsoKnownAs();
-        String mPlaceOfOrigin = sandwich.getPlaceOfOrigin();
+        List<String> mAlsoKnownAsList = mSandwich.getAlsoKnownAs();
+        String mPlaceOfOrigin = mSandwich.getPlaceOfOrigin();
         String mIngredient;
-        List<String> mIngredientsList = sandwich.getIngredients();
-        String mDescription = sandwich.getDescription();
+        List<String> mIngredientsList = mSandwich.getIngredients();
+        String mDescription = mSandwich.getDescription();
         StringBuilder mAKABuilder = new StringBuilder();
         StringBuilder mIngredientsBuilder = new StringBuilder();
 
-        // Assign aka to TextView
-        // This adds a bullet point to each aka and a new line to each except the last.
-        for (int i = 0; i < alsoKnownAsTV.length(); i++) {
-            mAKABuilder.append("\u2022 ").append(mAlsoKnownAsList.get(i));
-            if (i != mAlsoKnownAsList.size() -1) {
-                mAKABuilder.append('\n');
+        // Check for null and then assign aka to TextView
+        if (mAlsoKnownAsList == null || mAlsoKnownAsList.isEmpty()) {
+            mAlsoKnownAs = getString(R.string.no_aliases);
+        } else {
+            // Adds each aka and a new line to each except the last.
+            for (int i = 0; i < alsoKnownAsTV.length(); i++) {
+                mAKABuilder.append(mAlsoKnownAsList.get(i));
+                if (i != mAlsoKnownAsList.size() - 1) {
+                    mAKABuilder.append('\n');
+                }
             }
+            mAlsoKnownAs = mAKABuilder.toString();
         }
-
-        mAlsoKnownAs = mAKABuilder.toString();
         alsoKnownAsTV.setText(mAlsoKnownAs);
 
 
-        // Assign Place of Origin to TextView
+        // Check for null or empty variable and then assign mPlaceOfOrigin to TextView
+        if (mPlaceOfOrigin == null || mPlaceOfOrigin.equals("")) {
+            mPlaceOfOrigin = getString(R.string.unknown_origin);
+        }
         placeOfOriginTV.setText(mPlaceOfOrigin);
 
 
-        // Assign ingredients to TextView
-        // This adds a bullet point to each ingredient and a new line to each except the last.
-        for (int i = 0; i < mIngredientsList.size(); i++) {
-            mIngredientsBuilder.append("\u2022 ").append(mIngredientsList.get(i));
-            if (i != mIngredientsList.size() -1) {
-                mIngredientsBuilder.append('\n');
+        // Check for null and then assign ingredients to TextView
+        if (mIngredientsList == null || mIngredientsList.isEmpty()) {
+            mIngredient = getString(R.string.unknown_ingredients);
+        } else {
+        // This adds each ingredient and a new line to each except the last.
+            for (int i = 0; i < mIngredientsList.size(); i++) {
+                mIngredientsBuilder.append(mIngredientsList.get(i));
+                if (i != mIngredientsList.size() - 1) {
+                    mIngredientsBuilder.append('\n');
+                }
             }
+            mIngredient = mIngredientsBuilder.toString();
         }
-
-        mIngredient = mIngredientsBuilder.toString();
         ingredientsTV.setText(mIngredient);
 
 
         // Assign description to the textview
+        if (mDescription == null || mDescription.equals("")) {
+            mDescription = getString(R.string.no_description);
+        }
         descriptionTV.setText(mDescription);
 
     }
