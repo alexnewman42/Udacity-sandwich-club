@@ -21,27 +21,30 @@ public final class JsonUtils {
 
     public static Sandwich parseSandwichJson(String json) {
 
+        //create a null object
         Sandwich mSandwich = null;
 
         try {
+            // Initialize JSONObject from JSON String
             JSONObject mSandwichJsonObject = new JSONObject(json);
 
+            // Name into a JSONObject
             JSONObject mName = mSandwichJsonObject.getJSONObject(NAME);
 
+            // get the data from json and assign to variables
             String mMainName = mName.getString(MAIN_NAME);
 
             JSONArray mAKAJsonArray = mName.getJSONArray(ALSO_KNOWN_AS);
             List<String> mAKA = jsonArrayToStringListConverter(mAKAJsonArray);
 
             String mPlaceOfOrigin = mSandwichJsonObject.getString(PLACE_OF_ORIGIN);
-
             String mDescription = mSandwichJsonObject.getString(DESCRIPTION);
-
             String mImage = mSandwichJsonObject.getString(IMAGE);
 
             JSONArray mIngredientsJsonArray = mSandwichJsonObject.getJSONArray(INGREDIENTS);
             List<String> mIngredients = jsonArrayToStringListConverter(mIngredientsJsonArray);
 
+            // Assign variables to mSandwich
             mSandwich = new Sandwich(mMainName, mAKA, mPlaceOfOrigin, mDescription, mImage, mIngredients);
 
         } catch (JSONException e) {
@@ -52,12 +55,14 @@ public final class JsonUtils {
 
     }
 
-    private static List<String> jsonArrayToStringListConverter (JSONArray jsonArray) throws JSONException {
-        int arrayLength = jsonArray.length();
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < arrayLength; i++) {
-            result.add(jsonArray.getString(i));
+
+    private static List<String> jsonArrayToStringListConverter (JSONArray mJsonArray) throws JSONException {
+        // method takes a jsonArray and returns a List
+        int mArrayLength = mJsonArray.length();
+        List<String> mResult = new ArrayList<>();
+        for (int i = 0; i < mArrayLength; i++) {
+            mResult.add(mJsonArray.getString(i));
         }
-        return result;
+        return mResult;
     }
 }
