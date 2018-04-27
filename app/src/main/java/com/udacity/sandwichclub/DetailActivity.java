@@ -83,7 +83,7 @@ public class DetailActivity extends AppCompatActivity {
             mAlsoKnownAs = getString(R.string.no_aliases);
         } else {
             // Adds each aka and a new line to each except the last.
-            for (int i = 0; i < alsoKnownAsTV.length(); i++) {
+            for (int i = 0; i < mAlsoKnownAsList.size(); i++) {
                 mAKABuilder.append(mAlsoKnownAsList.get(i));
                 if (i != mAlsoKnownAsList.size() - 1) {
                     mAKABuilder.append('\n');
