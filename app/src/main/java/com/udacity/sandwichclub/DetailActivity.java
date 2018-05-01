@@ -12,18 +12,30 @@ import com.udacity.sandwichclub.utils.JsonUtils;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
 
     // class variables
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
 
+    @BindView(R.id.image_iv) ImageView ingredientsIv;
+    @BindView(R.id.also_known_tv) TextView alsoKnownAsTV;
+    @BindView(R.id.origin_tv) TextView placeOfOriginTV;
+    @BindView(R.id.ingredients_tv) TextView ingredientsTV;
+    @BindView(R.id.description_tv) TextView descriptionTV;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
 
-        ImageView ingredientsIv = findViewById(R.id.image_iv);
+        //ImageView ingredientsIv = findViewById(R.id.image_iv);
+
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -62,11 +74,11 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateUI(Sandwich mSandwich) {
 
-        // get references to TextViews
-        TextView alsoKnownAsTV = findViewById(R.id.also_known_tv);
-        TextView placeOfOriginTV = findViewById(R.id.origin_tv);
-        TextView ingredientsTV = findViewById(R.id.ingredients_tv);
-        TextView descriptionTV = findViewById(R.id.description_tv);
+        // get references to TextViews (old)
+        //TextView alsoKnownAsTV = findViewById(R.id.also_known_tv);
+        //TextView placeOfOriginTV = findViewById(R.id.origin_tv);
+        //TextView ingredientsTV = findViewById(R.id.ingredients_tv);
+        //TextView descriptionTV = findViewById(R.id.description_tv);
 
         // method variables
         String mAlsoKnownAs;

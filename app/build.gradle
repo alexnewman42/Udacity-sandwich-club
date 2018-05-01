@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def BUTTER_KNIFE_VERSION="8.8.1"
+
 android {
     compileSdkVersion 26
     buildToolsVersion '27.0.3'
@@ -18,8 +20,11 @@ android {
     }
 }
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation "com.jakewharton:butterknife:$BUTTER_KNIFE_VERSION"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTER_KNIFE_VERSION"
 }
